@@ -1,8 +1,7 @@
 package com.springboot.student_management_system.controller;
 
 import com.springboot.student_management_system.entity.Student;
-import com.springboot.student_management_system.repository.StudentRepository;
-import lombok.Getter;
+import com.springboot.student_management_system.service.StudentService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,10 +10,10 @@ import java.util.List;
 @RequestMapping("/api/students")
 public class StudentController {
 
-    private final StudentRepository studentRepository;
+    private final StudentService studentService;
 
-    public StudentController(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
     }
 
 
@@ -22,20 +21,17 @@ public class StudentController {
     //Get All Students
     @GetMapping
     public List<Student> getAllStudents(){
-        return studentRepository.findAll();
+        return studentService.getAllStudents();
     }
 
     //Get student by id
     @GetMapping("/{id}")
     public Student getStudentById(@PathVariable Long id){
-        return studentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(
-                        "Student not found with id: " + id
-                ));
+        return studentService.getStudentById(id);
     }
     @PostMapping
     public Student saveStudent(@RequestBody Student student){
-        return studentRepository.save(student);
+        return studentService.saveStudent(student);
     }
 
     @PutMapping("/{id}")
@@ -51,7 +47,7 @@ public class StudentController {
 
     @DeleteMapping("/{id}")
     public String deleteStudent(@PathVariable Long id){
-        studentRepository.deleteById(id);
+        studentService.deleteStudentById(id);
         return "Student deleted with id : " + id;
     }
 }
