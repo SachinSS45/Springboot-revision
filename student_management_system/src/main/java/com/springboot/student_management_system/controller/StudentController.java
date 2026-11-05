@@ -16,4 +16,20 @@ public class StudentController {
     public String saveStudent(@RequestBody String student){
         return "Student saved successfully";
     }
+
+    @PutMapping("/{id}")
+    public String updateStudent(@PathVariable Long id,@RequestBody String student){
+        return "Student with id " + id + " updated successfully";
+    }
+
+    @PatchMapping("/{id}")
+    public String patchStudent(@PathVariable Long id,
+                               @RequestBody String email){
+        return "Student email updated for id "+id;
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteStudent(@PathVariable Long id){
+        return "Student with id : " + id + " deleted successfully";
+    }
 }
