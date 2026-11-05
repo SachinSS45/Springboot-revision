@@ -35,14 +35,14 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public String updateStudent(@PathVariable Long id,@RequestBody String student){
-        return "Student with id " + id + " updated successfully";
+    public Student updateStudent(@PathVariable Long id,@RequestBody Student student){
+        return studentService.updateStudent(id,student);
     }
 
     @PatchMapping("/{id}")
-    public String patchStudent(@PathVariable Long id,
-                               @RequestBody String email){
-        return "Student email updated for id "+id;
+    public Student patchStudent(@PathVariable Long id,
+                               @RequestBody Student student){
+        return studentService.patchStudent(id,student);
     }
 
     @DeleteMapping("/{id}")

@@ -33,4 +33,39 @@ public class StudentServiceImpl implements StudentService{
     public void deleteStudentById(Long id) {
         studentRepository.deleteById(id);
     }
+
+    @Override
+    public Student updateStudent(Long id, Student student) {
+        Student existingStudent = studentRepository.findById(id).orElse(null);
+        if(existingStudent!=null){
+            existingStudent.setFirstName(student.getFirstName());
+            existingStudent.setLastName(student.getLastName());
+            existingStudent.setEmail(student.getEmail());
+            existingStudent.setCourse(student.getCourse());
+            return studentRepository.save(existingStudent);
+        }
+        return null;
+    }
+
+    @Override
+    public Student patchStudent(Long id, Student student) {
+        Student existingStudent = studentRepository.findById(id).orElse(null);
+        if(existingStudent!=null) {
+
+            if (student.getFirstName() != null)
+                existingStudent.setFirstName(student.getFirstName());
+
+            if (student.getLastName() != null)
+                existingStudent.setLastName(student.getLastName());
+
+            if (student.getEmail() != null)
+                existingStudent.setEmail(student.getEmail());
+
+            if (student.getCourse() != null)
+                existingStudent.setCourse(student.getCourse());
+
+            return studentRepository.save(existingStudent);
+        }
+        return null;
+    }
 }
