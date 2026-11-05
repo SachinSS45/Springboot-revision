@@ -1,20 +1,41 @@
 package com.springboot.student_management_system.controller;
 
+import com.springboot.student_management_system.entity.Student;
+import com.springboot.student_management_system.repository.StudentRepository;
+import lombok.Getter;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/students")
 public class StudentController {
 
-    //http://localhost:8080/students/hello
-    @GetMapping("/hello")
-    public String sayHello(){
-        return "Hello from Student Management System";
+    private final StudentRepository studentRepository;
+
+    public StudentController(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
-    @PostMapping("/student")
-    public String saveStudent(@RequestBody String student){
-        return "Student saved successfully";
+
+    //http://localhost:8080/students/hello
+    //Get All Students
+    @GetMapping
+    public List<Student> getAllStudents(){
+        return studentRepository.findAll();
+    }
+
+    //Get student by id
+    @GetMapping("/{id}")
+    public Student getStudentById(@PathVariable Long id){
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(
+                        "Student not found with id: " + id
+                ));
+    }
+    @PostMapping
+    public Student saveStudent(@RequestBody Student student){
+        return studentRepository.save(student);
     }
 
     @PutMapping("/{id}")
@@ -30,6 +51,7 @@ public class StudentController {
 
     @DeleteMapping("/{id}")
     public String deleteStudent(@PathVariable Long id){
-        return "Student with id : " + id + " deleted successfully";
+        studentRepository.deleteById(id);
+        return "Student deleted with id : " + id;
     }
 }
